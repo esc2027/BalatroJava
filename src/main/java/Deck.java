@@ -1,17 +1,14 @@
 import java.util.*;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class Deck {
     ArrayList<Card> cards;
     ArrayList<Joker> jokers;
-    int jokerSlots;
-    int handSize;
+    int jokerSlots = 5;
+    int handSize = 5;
 
     public Deck() {
         cards = new ArrayList<>();
         jokers = new ArrayList<>();
-        handSize = 5;
-
         for(int suit = 0; suit <= 3; suit++) {
             for(int value = 2; value <= 13; value++) {
                 Card card = new Card(suit, value);
@@ -21,10 +18,11 @@ public class Deck {
     }
 
     public void fillHand() {
-
         if(cardsInHand() >= handSize) return;
 
-        for(int i = 0; i < handSize - cardsInHand(); i++) {
+        int cardsInHand = cardsInHand();
+
+        for(int i = 0; i < handSize - cardsInHand; i++) {
             draw();
         }
     }
