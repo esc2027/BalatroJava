@@ -14,13 +14,13 @@ public class Card {
 
     public char getSuit() {
         switch(suit) {
-            case 0: //spades
+            case 0:
                 return '♠';
-            case 1: //hearts
+            case 1:
                 return '♡';
-            case 2: //clubs
+            case 2:
                 return '♣';
-            case 3: //diamonds
+            case 3:
                 return '♢';
             default:
                 return 'X';

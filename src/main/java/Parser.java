@@ -7,9 +7,19 @@ public class Parser {
         scanner = new Scanner(System.in);
     }
 
-    public void parse() {
+    public Hand parse(Player player) {
         String input = scanner.nextLine();
 
-        if(input.charAt(0) = 'D')
+        char commandChar = input.toLowerCase().charAt(0);
+        input = input.substring(1).trim();
+
+        if(commandChar == 'p') return player.getDeck().parseHand(input);
+        if(commandChar == 'd') return player.getDeck().parseDiscard(input);
+
+        if(commandChar == 'q') {
+            System.out.println("Goodbye.");
+            System.exit(0);
+        }
+        return null;
     }
 }

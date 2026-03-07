@@ -1,6 +1,8 @@
 public class Game {
     private Player player;
+    private Parser parser;
     int gameState = 0; //0 = blind select, 1 = game, 2 = shop
+    int chips, mult;
     int ante = 1;
     int round = 0;
     Blind smallBlind, bigBlind, bossBlind;
@@ -11,6 +13,7 @@ public class Game {
 
     public Game() {
         player = new Player();
+        parser = new Parser();
         System.out.println("===Welcome to Balatro!===");
         gameLoop();
     }
@@ -51,6 +54,9 @@ public class Game {
             player.getDeck().printJokers();
             player.getDeck().printHand();
 
+            Hand hand = parser.parse(player);
+            System.out.println(hand.getName());
+
             player.changeScore(blind.getTargetScore());
 
         }
@@ -61,5 +67,17 @@ public class Game {
 
     public void shop() {
         Shop shop = new Shop();
+    }
+
+    public void changeChips(int amount) {
+        chips += amount;
+    }
+
+    public void changeMult(int amount) {
+        mult += amount;
+    }
+
+    public void multMult(int amount) {
+        mult *= amount;
     }
 }
