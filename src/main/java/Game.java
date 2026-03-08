@@ -51,13 +51,13 @@ public class Game {
             player.getDeck().fillHand();
 
             blind.print();
-            player.getDeck().printJokers();
+            player.getJokerDeck().printJokers();
             player.getDeck().printHand();
 
             Hand hand = parser.parse(player);
             System.out.println(hand.getName());
 
-            player.changeScore(blind.getTargetScore());
+            //player.changeScore(blind.getTargetScore());
 
         }
         System.out.println("BLIND DEFEATED with score " + player.getScore());

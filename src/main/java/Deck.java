@@ -2,16 +2,14 @@ import java.util.*;
 
 public class Deck {
     ArrayList<Card> cards;
-    ArrayList<Joker> jokers;
-    int jokerSlots = 5;
-    int handSize = 5;
+    int handSize = 8;
 
     public Deck() {
         cards = new ArrayList<>();
-        jokers = new ArrayList<>();
+
         for(int suit = 0; suit <= 3; suit++) {
-            for(int value = 2; value <= 13; value++) {
-                Card card = new Card(suit, value);
+            for(int rank = 2; rank <= 12; rank++) {
+                Card card = new Card(Suit.values()[suit], Rank.values()[rank]);
                 cards.add(card);
             }
         }
@@ -40,23 +38,10 @@ public class Deck {
     public void printHand() {
         for(Card card : cards) {
             if(card.getState() == 1) {
-                System.out.print("|" + card.getSuit() + card.getValue());
+                System.out.print("|" + card.getSuitEnum().getSymbol() + card.getRank().getRankString());
             }
         }
         System.out.println("|");
-    }
-
-    public void printJokers() {
-        System.out.println("Jokers:");
-    }
-
-    public void addJoker(Joker joker) {
-        jokers.add(joker);
-    }
-
-    public void sellJoker(Joker joker, Player player) {
-        player.changeMoney(joker.getSellPrice());
-        jokers.remove(joker);
     }
 
     public void draw() {
@@ -72,45 +57,70 @@ public class Deck {
     public Hand parseHand(String input) {
         ArrayList<Card> playedCards = stringToCards(input);
 
-        int handTier = getHandTier(playedCards);
+        Hand handTier = getHandTier(playedCards);
 
-        return switch (handTier) {
-            case 1 -> new Hand("Pair", 10, 2, playedCards);
-            case 2 -> new Hand("Two Pair", 20, 2, playedCards);
-            case 3 -> new Hand("Three of a Kind", 30, 3, playedCards);
-            case 4 -> new Hand("Straight", 30, 4, playedCards);
-            case 5 -> new Hand("Flush", 35, 4, playedCards);
-            case 6 -> new Hand("Full House", 40, 4, playedCards);
-            case 7 -> new Hand("Four of a Kind", 60, 7, playedCards);
-            case 8 -> new Hand("Straight Flush", 100, 8, playedCards);
-            default -> new Hand("High Card", 5, 1, playedCards);
-        };
+        return handTier;
     }
 
-    private static int getHandTier(ArrayList<Card> playedCards) {
-        int handTier = 0;
+    private static Hand getHandTier(ArrayList<Card> playedCards) {
 
-//        for(Card card1 : playedCards) {
-//            for(Card card2 : playedCards) {
-//                if (card1.getValue() == card2.getValue()) {
-//                    handTier = 1;
-//                    break;
-//                }
+        boolean flush = true;
+        boolean straight = true;
+        int[] rankCount = new int[15];
+        Suit firstSuit = playedCards.get(0).getSuitEnum();
+
+        for(Card card : playedCards) {
+            if(card == null) {
+                flush = false;
+                straight = false;
+                continue;
+            }
+            rankCount[card.getRank().getValue()]++;
+            if(card.getSuitEnum() != firstSuit) flush = false;
+        }
+
+        List<Integer> ranks = new ArrayList<>();
+        for(Card card : playedCards) {
+            if(card == null) continue;
+            ranks.add(card.getRank().getValue());
+        }
+        Collections.sort(ranks);
+
+
+        for(int i = 1; i < ranks.size(); i++) {
+            if(ranks.get(i) != ranks.get(i - 1) + 1) {
+                straight = false;
+                break;
+            }
+        }
+
+        int pairs = 0;
+        boolean three = false;
+        boolean four = false;
+
+        for(int count : rankCount) {
+            if(count == 4) four = true;
+            if(count == 3) three = true;
+            if(count == 2) pairs++;
+        }
+
+//        for(Card card : playedCards) {
+//            if(card == null) {
+//                System.out.println("null");
+//                break;
 //            }
+//            System.out.println(card.getRank());
 //        }
-//        for(Card card1 : playedCards) {
-//            for(Card card2 : playedCards) {
-//                for(Card card3 : playedCards) {
-//                    for(Card card4 : playedCards) {
-//                        if (card1.getValue() == card2.getValue() && card3.getValue() == card4.getValue() && card1.getValue() != card3.getValue()) {
-//                            handTier = 2;
-//                            break;
-//                        }
-//                    }
-//                }
-//            }
-//        }
-        return handTier;
+
+        if(straight && flush) return Hand.STRAIGHTFLUSH;
+        if(four) return Hand.FOUROFAKIND;
+        if(three && pairs == 1) return Hand.FULLHOUSE;
+        if(flush) return Hand.FLUSH;
+        if(straight) return Hand.STRAIGHT;
+        if(three) return Hand.THREEOFAKIND;
+        if(pairs == 2) return Hand.TWOPAIR;
+        if(pairs == 1) return Hand.PAIR;
+        else return Hand.HIGHCARD;
     }
 
     public Hand parseDiscard(String input) {
@@ -128,6 +138,10 @@ public class Deck {
         for (char c : input.toCharArray()) {
             int index = Character.getNumericValue(c);
             returnArray.add(handCards.get(index));
+        }
+
+        while(returnArray.size() < 5) {
+            returnArray.add(null);
         }
 
         return returnArray;

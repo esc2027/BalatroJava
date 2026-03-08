@@ -1,30 +1,19 @@
 public class Card {
-    private int suit;
-    private int value;
+    private Suit suit;
+    private Rank rank;
     private int state = 0; //0 = in deck, 1 = in hand, 2 = discard
 
-    public Card(int suit, int value) {
+    public Card(Suit suit, Rank rank) {
         this.suit = suit;
-        this.value = value;
+        this.rank = rank;
     }
 
-    public int getValue() {
-        return value;
+    public Suit getSuitEnum() {
+        return suit;
     }
 
-    public char getSuit() {
-        switch(suit) {
-            case 0:
-                return '♠';
-            case 1:
-                return '♡';
-            case 2:
-                return '♣';
-            case 3:
-                return '♢';
-            default:
-                return 'X';
-        }
+    public Rank getRank() {
+        return rank;
     }
 
     public int getState() {
