@@ -12,12 +12,21 @@ public class Card {
         return suit;
     }
 
+    public String getNameColor() {
+        if(suit.getSymbol() == '♠' || suit.getSymbol() == '♣') return Color.black(Color.whitebg(suit.getSymbol() + rank.getRankString()));
+        else return Color.red(Color.whitebg(suit.getSymbol() + rank.getRankString()));
+    }
+
     public Rank getRank() {
         return rank;
     }
 
     public int getState() {
         return state;
+    }
+
+    public void reshuffle() {
+        state = 0;
     }
 
     public void draw() {

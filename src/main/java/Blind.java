@@ -39,6 +39,10 @@ public class Blind {
     }
 
     public void print() {
-        System.out.println(name + ", target " + targetScore);
+        System.out.println(name + ", target " + Color.white(targetScore));
+    }
+
+    public String getName() {
+        return name;
     }
 }

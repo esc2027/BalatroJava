@@ -14,7 +14,8 @@ public class Game {
     public Game() {
         player = new Player();
         parser = new Parser();
-        System.out.println("===Welcome to Balatro!===");
+        System.out.println(Color.white("============== Welcome to Balatro!=============="));
+
         gameLoop();
     }
 
@@ -25,7 +26,11 @@ public class Game {
                     blindSelect();
                     break;
                 case 1:
-                    game(smallBlind);
+                    switch(round) {
+                        case 0 -> game(smallBlind);
+                        case 1 -> game(bigBlind);
+                        case 2 -> game(bossBlind);
+                    }
                     break;
                 case 2:
                     shop();
@@ -38,35 +43,56 @@ public class Game {
     }
 
     public void blindSelect() {
+        if(round == 3) {
+            round = 0;
+            ante++;
+        }
+
         if(round == 0) {
-            smallBlind = new Blind(ante, "Small Blind", 1);
-            bigBlind = new Blind(ante, "Big Blind", 1.5);
-            bossBlind = new Blind(ante, "The Wall", 4);
+            smallBlind = new Blind(ante, Color.blue("Small Blind"), 1);
+            bigBlind = new Blind(ante, Color.yellow("Big Blind"), 1.5);
+            bossBlind = new Blind(ante, Color.purple("The Wall"), 4);
+            System.out.println(Color.white("==================== ANTE " + ante + " ====================\n================================================"));
         }
         gameState = 1;
     }
 
     public void game(Blind blind) {
-        while(player.getScore() < blind.getTargetScore()) {
+
+        player.getDeck().reshuffle();
+
+        while(player.getRoundScore() < blind.getTargetScore()) {
             player.getDeck().fillHand();
 
             blind.print();
+            System.out.println("Round Score: " + Color.white(player.getRoundScore()));
             player.getJokerDeck().printJokers();
             player.getDeck().printHand();
 
             Hand hand = parser.parse(player);
-            System.out.println(hand.getName());
-            System.out.println("================");
-            //player.changeScore(blind.getTargetScore());
+
+            System.out.println(Color.green(hand.getHandType().getName()));
+
+            chips = tallyChips(hand);
+            mult = hand.getMult();
+            System.out.println(Color.blue(chips) + " x " + Color.red(mult) + " = " + Color.white(chips*mult));
+            System.out.println(Color.white("------------------------------------------------"));
+            player.changeScore(chips*mult);
+
+            chips = mult = 0;
 
         }
-        System.out.println("BLIND DEFEATED with score " + player.getScore());
+
+        System.out.println(blind.getName() + " defeated with score " + Color.white(player.getRoundScore()));
+        System.out.println(Color.white("================================================"));
+        player.setScore(0);
         round++;
         gameState = 2;
     }
 
     public void shop() {
         Shop shop = new Shop();
+        gameState = 0;
     }
 
     public void changeChips(int amount) {
@@ -79,5 +105,18 @@ public class Game {
 
     public void multMult(int amount) {
         mult *= amount;
+    }
+
+    public int tallyChips(Hand hand) {
+        int chipsTally = hand.getChips();
+
+        System.out.print("Chips: " + Color.blue(hand.getChips()));
+        for(Card card : hand.getCards()) {
+            System.out.print(" + " + Color.blue(card.getRank().getValue()));
+            chipsTally += card.getRank().getValue();
+        }
+        System.out.println(" = " + Color.blue(chipsTally));
+
+        return chipsTally;
     }
 }

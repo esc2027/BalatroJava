@@ -7,16 +7,16 @@ public enum Rank {
     SEVEN(7, "7"),
     EIGHT(8, "8"),
     NINE(9, "9"),
-    TEN(10, "10"),
-    JACK(11, "J"),
-    QUEEN(12, "Q"),
-    KING(13, "K"),
-    ACE(14, "A");
+    TEN(10, "T"),
+    JACK(10, "J"),
+    QUEEN(10, "Q"),
+    KING(10, "K"),
+    ACE(11, "A");
 
     int value;
     String rankString;
 
-    Rank(int rank, String rankString) {
+    Rank(int value, String rankString) {
         this.value = value;
         this.rankString = rankString;
     }

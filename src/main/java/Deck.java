@@ -25,6 +25,10 @@ public class Deck {
         }
     }
 
+    public void reshuffle() {
+        for(Card card : cards) card.reshuffle();
+    }
+
     public int cardsInHand() {
         int cardsInHand = 0;
 
@@ -38,10 +42,10 @@ public class Deck {
     public void printHand() {
         for(Card card : cards) {
             if(card.getState() == 1) {
-                System.out.print("|" + card.getSuit().getSymbol() + card.getRank().getRankString());
+                System.out.print(" " + card.getNameColor());
             }
         }
-        System.out.println("|");
+        System.out.println(" ");
     }
 
     public void draw() {
@@ -56,13 +60,17 @@ public class Deck {
         drawOptions.get((int)(Math.random() * drawOptions.size())).draw();
     }
 
-    public Hand parseHand(String input) {
+    public Hand parseHand(String input) { //YOU CAN USE THE SAME CARD MULTIPLE TIMES (this is a problem obviously)
         ArrayList<Card> playedCards = stringToCards(input);
 
-        return getHandTier(playedCards);
+        for(Card card : playedCards) {
+            card.discard();
+        }
+
+        return new Hand(getHandTier(playedCards), playedCards);
     }
 
-    private static Hand getHandTier(ArrayList<Card> playedCards) {
+    private static HandType getHandTier(ArrayList<Card> playedCards) {
 
         boolean flush = true;
         boolean straight = true;
@@ -98,25 +106,25 @@ public class Deck {
             if(count == 2) pairs++;
         }
 
-        for(Card card : playedCards) {
-            if(card == null) {
-                System.out.println("null");
-                break;
-            }
-            System.out.println(card.getRank());
-        }
+//        for(Card card : playedCards) {
+//            if(card == null) {
+//                System.out.println("null");
+//                break;
+//            }
+//            System.out.println(card.getRank());
+//        }
 
         int size = playedCards.size();
 
-        if(size == 5 && straight && flush) return Hand.STRAIGHTFLUSH;
-        if(size >= 4 && four) return Hand.FOUROFAKIND;
-        if(size == 5 && three && pairs == 1) return Hand.FULLHOUSE;
-        if(size == 5 && flush) return Hand.FLUSH;
-        if(size == 5 && straight) return Hand.STRAIGHT;
-        if(size >= 3 && three) return Hand.THREEOFAKIND;
-        if(size >= 4 && pairs == 2) return Hand.TWOPAIR;
-        if(size >= 2 && pairs == 1) return Hand.PAIR;
-        else return Hand.HIGHCARD;
+        if(size == 5 && straight && flush) return HandType.STRAIGHTFLUSH;
+        if(size >= 4 && four) return HandType.FOUROFAKIND;
+        if(size == 5 && three && pairs == 1) return HandType.FULLHOUSE;
+        if(size == 5 && flush) return HandType.FLUSH;
+        if(size == 5 && straight) return HandType.STRAIGHT;
+        if(size >= 3 && three) return HandType.THREEOFAKIND;
+        if(size >= 4 && pairs == 2) return HandType.TWOPAIR;
+        if(size >= 2 && pairs == 1) return HandType.PAIR;
+        else return HandType.HIGHCARD;
     }
 
     public Hand parseDiscard(String input) {

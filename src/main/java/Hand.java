@@ -1,40 +1,35 @@
-public enum Hand {
+import java.util.ArrayList;
 
-    HIGHCARD(0, 5, 1, "High Card"),
-    PAIR(1, 10, 2, "Pair"),
-    TWOPAIR(2, 20, 2, "Two Pair"),
-    THREEOFAKIND(3, 30,3, "Three of a Kind"),
-    STRAIGHT(4, 30, 4, "Straight"),
-    FLUSH(5, 35, 4, "Flush"),
-    FULLHOUSE(6, 40, 4, "Full House"),
-    FOUROFAKIND(7, 60, 7, "Four of a Kind"),
-    STRAIGHTFLUSH(8, 100,8, "Straight Flush");
+public class Hand {
+    private HandType handType;
+    private ArrayList<Card> cards;
 
-    private final int handTier;
-    private final int chips;
-    private final int mult;
-    private final String name;
-
-    Hand(int handTier, int chips, int mult, String name) {
-        this.handTier = handTier;
-        this.chips = chips;
-        this.mult = mult;
-        this.name = name;
+    public Hand(HandType handType, ArrayList<Card> cards) {
+        this.handType = handType;
+        this.cards = cards;
     }
 
-    public int getHandTier() {
-        return handTier;
+    public HandType getHandType() {
+        return handType;
     }
 
     public int getChips() {
-        return chips;
+        return handType.getChips();
     }
 
     public int getMult() {
-        return mult;
+        return handType.getMult();
     }
 
     public String getName() {
-        return name;
+        return handType.getName();
+    }
+
+    public ArrayList<Card> getCards() {
+        return cards;
+    }
+
+    public Card getCard(int index) {
+        return cards.get(index);
     }
 }

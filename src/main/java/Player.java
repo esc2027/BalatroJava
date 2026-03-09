@@ -1,7 +1,7 @@
 public class Player {
     private Deck deck;
     private JokerDeck jokerDeck;
-    private int score;
+    private int roundScore;
     private int money;
 
     public Player() {
@@ -17,8 +17,8 @@ public class Player {
         return jokerDeck;
     }
 
-    public int getScore() {
-        return score;
+    public int getRoundScore() {
+        return roundScore;
     }
 
     public void changeMoney(int amount) {
@@ -26,6 +26,10 @@ public class Player {
     }
 
     public void changeScore(int amount) {
-        score += amount;
+        roundScore += amount;
+    }
+
+    public void setScore(int value) {
+        roundScore = value;
     }
 }
