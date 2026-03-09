@@ -56,7 +56,7 @@ public class Game {
 
             Hand hand = parser.parse(player);
             System.out.println(hand.getName());
-
+            System.out.println("================");
             //player.changeScore(blind.getTargetScore());
 
         }

@@ -2,13 +2,13 @@ import java.util.*;
 
 public class Deck {
     ArrayList<Card> cards;
-    int handSize = 8;
+    private int handSize = 8;
 
     public Deck() {
         cards = new ArrayList<>();
 
-        for(int suit = 0; suit <= 3; suit++) {
-            for(int rank = 2; rank <= 12; rank++) {
+        for(int rank = 12; rank >= 0; rank--) {
+            for(int suit = 0; suit <= 3; suit++) {
                 Card card = new Card(Suit.values()[suit], Rank.values()[rank]);
                 cards.add(card);
             }
@@ -38,7 +38,7 @@ public class Deck {
     public void printHand() {
         for(Card card : cards) {
             if(card.getState() == 1) {
-                System.out.print("|" + card.getSuitEnum().getSymbol() + card.getRank().getRankString());
+                System.out.print("|" + card.getSuit().getSymbol() + card.getRank().getRankString());
             }
         }
         System.out.println("|");
@@ -51,15 +51,15 @@ public class Deck {
             if (card.getState() == 0) drawOptions.add(card);
         }
 
+        if(drawOptions.isEmpty()) return;
+
         drawOptions.get((int)(Math.random() * drawOptions.size())).draw();
     }
 
     public Hand parseHand(String input) {
         ArrayList<Card> playedCards = stringToCards(input);
 
-        Hand handTier = getHandTier(playedCards);
-
-        return handTier;
+        return getHandTier(playedCards);
     }
 
     private static Hand getHandTier(ArrayList<Card> playedCards) {
@@ -67,21 +67,15 @@ public class Deck {
         boolean flush = true;
         boolean straight = true;
         int[] rankCount = new int[15];
-        Suit firstSuit = playedCards.get(0).getSuitEnum();
+        Suit firstSuit = playedCards.get(0).getSuit();
 
         for(Card card : playedCards) {
-            if(card == null) {
-                flush = false;
-                straight = false;
-                continue;
-            }
             rankCount[card.getRank().getValue()]++;
-            if(card.getSuitEnum() != firstSuit) flush = false;
+            if(card.getSuit() != firstSuit) flush = false;
         }
 
         List<Integer> ranks = new ArrayList<>();
         for(Card card : playedCards) {
-            if(card == null) continue;
             ranks.add(card.getRank().getValue());
         }
         Collections.sort(ranks);
@@ -104,22 +98,24 @@ public class Deck {
             if(count == 2) pairs++;
         }
 
-//        for(Card card : playedCards) {
-//            if(card == null) {
-//                System.out.println("null");
-//                break;
-//            }
-//            System.out.println(card.getRank());
-//        }
+        for(Card card : playedCards) {
+            if(card == null) {
+                System.out.println("null");
+                break;
+            }
+            System.out.println(card.getRank());
+        }
 
-        if(straight && flush) return Hand.STRAIGHTFLUSH;
-        if(four) return Hand.FOUROFAKIND;
-        if(three && pairs == 1) return Hand.FULLHOUSE;
-        if(flush) return Hand.FLUSH;
-        if(straight) return Hand.STRAIGHT;
-        if(three) return Hand.THREEOFAKIND;
-        if(pairs == 2) return Hand.TWOPAIR;
-        if(pairs == 1) return Hand.PAIR;
+        int size = playedCards.size();
+
+        if(size == 5 && straight && flush) return Hand.STRAIGHTFLUSH;
+        if(size >= 4 && four) return Hand.FOUROFAKIND;
+        if(size == 5 && three && pairs == 1) return Hand.FULLHOUSE;
+        if(size == 5 && flush) return Hand.FLUSH;
+        if(size == 5 && straight) return Hand.STRAIGHT;
+        if(size >= 3 && three) return Hand.THREEOFAKIND;
+        if(size >= 4 && pairs == 2) return Hand.TWOPAIR;
+        if(size >= 2 && pairs == 1) return Hand.PAIR;
         else return Hand.HIGHCARD;
     }
 
@@ -136,12 +132,8 @@ public class Deck {
         }
 
         for (char c : input.toCharArray()) {
-            int index = Character.getNumericValue(c);
+            int index = Character.getNumericValue(c) - 1;
             returnArray.add(handCards.get(index));
-        }
-
-        while(returnArray.size() < 5) {
-            returnArray.add(null);
         }
 
         return returnArray;
@@ -153,5 +145,9 @@ public class Deck {
 
     public void play(Card card) {
         card.discard();
+    }
+
+    public int getHandSize() {
+        return handSize;
     }
 }

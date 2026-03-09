@@ -8,7 +8,7 @@ public class Card {
         this.rank = rank;
     }
 
-    public Suit getSuitEnum() {
+    public Suit getSuit() {
         return suit;
     }
 
