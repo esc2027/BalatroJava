@@ -21,6 +21,10 @@ public class Player {
         return roundScore;
     }
 
+    public int getMoney() {
+        return money;
+    }
+
     public void changeMoney(int amount) {
         money += amount;
     }

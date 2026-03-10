@@ -1,11 +1,13 @@
+import java.util.Scanner;
+
 public class Game {
     private Player player;
-    private Parser parser;
     int gameState = 0; //0 = blind select, 1 = game, 2 = shop
-    int chips, mult;
+    int chips, mult, hands, discards;
     int ante = 1;
     int round = 0;
     Blind smallBlind, bigBlind, bossBlind;
+    Scanner scanner;
 
     public static void main(String[] args) {
         Game game = new Game();
@@ -13,7 +15,8 @@ public class Game {
 
     public Game() {
         player = new Player();
-        parser = new Parser();
+        scanner = new Scanner(System.in);
+
         System.out.println(Color.white("============== Welcome to Balatro!=============="));
 
         gameLoop();
@@ -49,27 +52,32 @@ public class Game {
         }
 
         if(round == 0) {
-            smallBlind = new Blind(ante, Color.blue("Small Blind"), 1);
-            bigBlind = new Blind(ante, Color.yellow("Big Blind"), 1.5);
-            bossBlind = new Blind(ante, Color.purple("The Wall"), 4);
+            smallBlind = new Blind(ante, Color.blue("Small Blind"), 1, 3);
+            bigBlind = new Blind(ante, Color.yellow("Big Blind"), 1.5, 4);
+            bossBlind = new Blind(ante, Color.purple("The Wall"), 4, 5);
             System.out.println(Color.white("==================== ANTE " + ante + " ====================\n================================================"));
         }
+
+        player.getDeck().reshuffle();
+        hands = discards = 4;
+
         gameState = 1;
     }
 
     public void game(Blind blind) {
-
-        player.getDeck().reshuffle();
 
         while(player.getRoundScore() < blind.getTargetScore()) {
             player.getDeck().fillHand();
 
             blind.print();
             System.out.println("Round Score: " + Color.white(player.getRoundScore()));
+            System.out.println("Hands " + Color.blue(hands) + ", Discards " + Color.red(discards) + ", " + Color.yellow("$" + player.getMoney()));
             player.getJokerDeck().printJokers();
+            System.out.println();
+
             player.getDeck().printHand();
 
-            Hand hand = parser.parse(player);
+            Hand hand = parse();
 
             System.out.println(Color.green(hand.getHandType().getName()));
 
@@ -84,6 +92,16 @@ public class Game {
         }
 
         System.out.println(blind.getName() + " defeated with score " + Color.white(player.getRoundScore()));
+        System.out.println(Color.yellow("\nCashout: "));
+        System.out.println(blind.getName() + " ---> " + Color.yellow("$" + blind.getRewardMoney()));
+        if(hands > 0) System.out.println(Color.blue(hands) + " Remaining Hands......." + Color.yellow("$" + hands));
+        if(player.getMoney() >= 5) System.out.println(Color.white("1") + " interest per $5......." + Color.yellow("$" + Math.min(player.getMoney()/5, 5)));
+        int moneyTally = blind.getRewardMoney() + hands + Math.min(player.getMoney()/5, 5);
+
+        player.changeMoney(moneyTally);
+        System.out.println("\nPress " + Color.white("Enter") + " to cash out for " + Color.yellow("$" + moneyTally));
+        scanner.nextLine();
+
         System.out.println(Color.white("================================================"));
         player.setScore(0);
         round++;
@@ -98,11 +116,9 @@ public class Game {
     public void changeChips(int amount) {
         chips += amount;
     }
-
     public void changeMult(int amount) {
         mult += amount;
     }
-
     public void multMult(int amount) {
         mult *= amount;
     }
@@ -118,5 +134,38 @@ public class Game {
         System.out.println(" = " + Color.blue(chipsTally));
 
         return chipsTally;
+    }
+
+    public Hand parse() {
+
+        String input = "";
+        while(input.equals("")) {
+            input = scanner.nextLine();
+        }
+
+        char commandChar = input.toLowerCase().charAt(0);
+        input = input.substring(1).replaceAll(" ", "");
+
+        if(commandChar == 'q' || commandChar == 'e') {
+            System.out.println("Goodbye.");
+            System.exit(0);
+        }
+
+        if(input.matches("\\d+")) {
+            if(input.length() <= 5) {
+                boolean inputHasValidRange = true;
+                for(char c : input.toCharArray()) {
+                    int cValue = c - '0';
+                    if(cValue == 0 || cValue > (char)player.getDeck().getHandSize()) inputHasValidRange = false;
+                }
+                if(inputHasValidRange) {
+                    if(commandChar == 'p') return player.getDeck().parseHand(input);
+                    if(commandChar == 'd') return player.getDeck().parseDiscard(input);
+                }
+            }
+        }
+
+        System.out.println("Please enter a valid command.");
+        return parse();
     }
 }

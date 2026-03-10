@@ -1,9 +1,11 @@
 public class Blind {
     private String name;
     private int targetScore;
+    private int rewardMoney;
 
-    public Blind(int ante, String name, double blindMult) {
+    public Blind(int ante, String name, double blindMult, int rewardMoney) {
         this.name = name;
+        this.rewardMoney = rewardMoney;
 
         switch(ante) {
             case 1:
@@ -44,5 +46,9 @@ public class Blind {
 
     public String getName() {
         return name;
+    }
+
+    public int getRewardMoney() {
+        return rewardMoney;
     }
 }
