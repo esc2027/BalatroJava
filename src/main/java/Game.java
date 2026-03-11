@@ -85,7 +85,7 @@ public class Game {
             mult = hand.getMult();
             System.out.println(Color.blue(chips) + " x " + Color.red(mult) + " = " + Color.white(chips*mult));
             System.out.println(Color.white("------------------------------------------------"));
-            player.changeScore(chips*mult);
+            player.changeScore(chips*mult*10000);
 
             chips = mult = 0;
 
@@ -109,7 +109,9 @@ public class Game {
     }
 
     public void shop() {
-        Shop shop = new Shop();
+        Shop shop = new Shop(2);
+        shop.print();
+        scanner.nextLine();
         gameState = 0;
     }
 
