@@ -36,7 +36,7 @@ public class JokerBank {
         Collections.shuffle(jokerChoices);
         Joker chosenJoker = jokerChoices.get(0);
 
-        removeJoker(chosenJoker);
+        //removeJoker(chosenJoker);
         return chosenJoker;
 
 

@@ -24,5 +24,13 @@ public class Shop {
     public void buyJoker(int index) {
         System.out.println("Bought " + jokers.get(index).getName());
 
+        jokers.remove(jokers.get(index));
+        JokerBank.removeJoker(jokers.get(index));
+
+        System.out.println("Left in shop: ");
+        for(Joker joker : jokers) {
+            System.out.println(joker.getName() + Color.yellow(" $" + joker.getBuyPrice()));
+        }
+
     }
 }

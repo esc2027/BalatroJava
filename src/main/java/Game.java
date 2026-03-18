@@ -77,22 +77,35 @@ public class Game {
 
             player.getDeck().printHand();
 
-            Hand hand = parse();
+            String input = getInput();
+            char commandState = parse(input);
+            input = input.substring(1).replaceAll(" ", "");
 
-            System.out.println(Color.green(hand.getHandType().getName()));
 
-            chips = tallyChips(hand);
-            mult = hand.getMult();
-            System.out.println(Color.blue(chips) + " x " + Color.red(mult) + " = " + Color.white(chips*mult));
-            System.out.println(Color.white("------------------------------------------------"));
-            player.changeScore(chips*mult*10000);
+            switch(commandState) {
+                case 'p':
+                    Hand hand = player.getDeck().parseHand(input);
 
-            chips = mult = 0;
+                    System.out.println(Color.green(hand.getHandType().getName()));
+
+                    chips = tallyChips(hand);
+                    mult = hand.getMult();
+                    System.out.println(Color.blue(chips) + " x " + Color.red(mult) + " = " + Color.white(chips*mult));
+                    System.out.println(Color.white("------------------------------------------------"));
+                    player.changeScore(chips*mult);
+
+                    chips = mult = 0;
+                    break;
+                case 'd':
+                    player.getDeck().parseDiscard(input);
+                    break;
+            }
+
 
         }
 
         System.out.println(blind.getName() + " defeated with score " + Color.white(player.getRoundScore()));
-        System.out.println(Color.yellow("\nCashout: "));
+        System.out.println(Color.yellow("\n------------------- Cashout --------------------"));
         System.out.println(blind.getName() + " ---> " + Color.yellow("$" + blind.getRewardMoney()));
         if(hands > 0) System.out.println(Color.blue(hands) + " Remaining Hands......." + Color.yellow("$" + hands));
         if(player.getMoney() >= 5) System.out.println(Color.white("1") + " interest per $5......." + Color.yellow("$" + Math.min(player.getMoney()/5, 5)));
@@ -138,36 +151,45 @@ public class Game {
         return chipsTally;
     }
 
-    public Hand parse() {
-
-        String input = "";
-        while(input.equals("")) {
-            input = scanner.nextLine();
-        }
+    public char parse(String input) {
 
         char commandChar = input.toLowerCase().charAt(0);
+
         input = input.substring(1).replaceAll(" ", "");
+        char[] cardIndexes = input.toCharArray();
 
         if(commandChar == 'q' || commandChar == 'e') {
             System.out.println("Goodbye.");
             System.exit(0);
         }
 
-        if(input.matches("\\d+")) {
-            if(input.length() <= 5) {
-                boolean inputHasValidRange = true;
-                for(char c : input.toCharArray()) {
-                    int cValue = c - '0';
-                    if(cValue == 0 || cValue > (char)player.getDeck().getHandSize()) inputHasValidRange = false;
-                }
-                if(inputHasValidRange) {
-                    if(commandChar == 'p') return player.getDeck().parseHand(input);
-                    if(commandChar == 'd') return player.getDeck().parseDiscard(input);
-                }
+        boolean inputHasValidRange = true;
+        if(!input.matches("\\d+")) inputHasValidRange = false;
+        if(input.length() > 5) inputHasValidRange = false;
+        for(char c : cardIndexes) {
+            int cValue = c - '0';
+            if(cValue == 0 || cValue > (char)player.getDeck().getHandSize()) inputHasValidRange = false;
+        }
+
+        if(inputHasValidRange) {
+            if(gameState == 1) {
+                if(commandChar == 'p' || commandChar == 'd') return commandChar;
+            }
+            if(gameState == 2) {
+                if(commandChar == 'b') return commandChar;
             }
         }
 
         System.out.println("Please enter a valid command.");
-        return parse();
+        return parse(getInput());
+    }
+
+    public String getInput() {
+        String input = "";
+        while(input.equals("")) {
+            input = scanner.nextLine();
+        }
+
+        return input;
     }
 }
