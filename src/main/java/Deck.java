@@ -128,6 +128,12 @@ public class Deck {
     }
 
     public Hand parseDiscard(String input) {
+        ArrayList<Card> playedCards = stringToCards(input);
+
+        for(Card card : playedCards) {
+            card.discard();
+        }
+
         return null;
     }
 

@@ -67,6 +67,9 @@ public class Game {
     public void game(Blind blind) {
 
         while(player.getRoundScore() < blind.getTargetScore()) {
+
+            if(hands == 0) printLose();
+
             player.getDeck().fillHand();
 
             blind.print();
@@ -84,9 +87,11 @@ public class Game {
 
             switch(commandState) {
                 case 'p':
+                    hands--;
+
                     Hand hand = player.getDeck().parseHand(input);
 
-                    System.out.println(Color.green(hand.getHandType().getName()));
+                    System.out.println("Played a " + Color.green(hand.getHandType().getName()));
 
                     chips = tallyChips(hand);
                     mult = hand.getMult();
@@ -97,11 +102,14 @@ public class Game {
                     chips = mult = 0;
                     break;
                 case 'd':
-                    player.getDeck().parseDiscard(input);
+                    if(discards > 0) {
+                        discards--;
+                        player.getDeck().parseDiscard(input);
+                    } else System.out.println(Color.red("Out of discards"));
+
+                    System.out.println(Color.white("------------------------------------------------"));
                     break;
             }
-
-
         }
 
         System.out.println(blind.getName() + " defeated with score " + Color.white(player.getRoundScore()));
@@ -191,5 +199,12 @@ public class Game {
         }
 
         return input;
+    }
+
+    public void printLose() {
+        System.out.println(Color.red("------------------ GAME OVER -------------------"));
+        System.out.println("Ante: " + Color.white(ante));
+        System.out.println("Round: " + Color.white(round));
+        System.exit(0);
     }
 }
