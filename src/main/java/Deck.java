@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 public class Deck {
     ArrayList<Card> cards;
@@ -43,6 +44,8 @@ public class Deck {
         for(Card card : cards) {
             if(card.getState() == 1) {
                 System.out.print(" " + card.getNameColor());
+                //System.out.flush();
+                Timer.sleep(100);
             }
         }
         System.out.println(" ");
