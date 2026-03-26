@@ -1,5 +1,3 @@
-import java.util.HashMap;
-
 public class Color {
     public static final String RESETCOLOR = "\u001B[0m";
 

@@ -24,7 +24,7 @@ public class JokerBank {
 
     }
 
-    public static Joker randomJoker() { //Maybe instead of removing the joker here, only remove the joker when it is bought from shop to prevent readding if joker is not bought
+    public static Joker randomJoker() {
         double chance = Math.random();
         int chosenRarity = 0;
 
@@ -36,7 +36,7 @@ public class JokerBank {
         Collections.shuffle(jokerChoices);
         Joker chosenJoker = jokerChoices.get(0);
 
-        //removeJoker(chosenJoker);
+        removeJoker(chosenJoker);
         return chosenJoker;
 
 
@@ -44,6 +44,10 @@ public class JokerBank {
 
     public static void removeJoker(Joker joker) {
         jokers.remove(joker);
+    }
+
+    public static void addJoker(Joker joker) {
+        jokers.add(joker);
     }
 
     public static ArrayList<Joker> jokersOfRarity(int rarity) {

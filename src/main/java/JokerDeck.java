@@ -9,7 +9,11 @@ public class JokerDeck {
     }
 
     public void printJokers() {
-        System.out.println("Jokers:");
+        System.out.print("Jokers:");
+        for(Joker joker : jokers) {
+            System.out.print(" " + joker.getName() + Color.RESETCOLOR);
+        }
+        System.out.println();
     }
 
     public void addJoker(Joker joker) {

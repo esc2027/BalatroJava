@@ -21,16 +21,28 @@ public class Shop {
 
     }
 
-    public void buyJoker(int index) {
+    public void buyJoker(int index, JokerDeck jokerDeck) {
         System.out.println("Bought " + jokers.get(index).getName());
-
+        
+        jokerDeck.addJoker(jokers.get(index));
         jokers.remove(jokers.get(index));
-        JokerBank.removeJoker(jokers.get(index));
 
-        System.out.println("Left in shop: ");
+        System.out.println("\nLeft in shop: ");
         for(Joker joker : jokers) {
             System.out.println(joker.getName() + Color.yellow(" $" + joker.getBuyPrice()));
         }
 
+    }
+
+    public int getSize() {
+        return jokers.size();
+
+    }
+
+    public void endShop() {
+        for(Joker joker : jokers) {
+            JokerBank.addJoker(joker);
+        }
+        System.out.println("------------------------------------------------");
     }
 }

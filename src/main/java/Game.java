@@ -10,6 +10,7 @@ public class Game {
     Scanner scanner;
 
     public static void main(String[] args) {
+        //I can do a title banner here using color class and '█'
         Game game = new Game();
     }
 
@@ -132,7 +133,21 @@ public class Game {
     public void shop() {
         Shop shop = new Shop(2);
         shop.print();
-        scanner.nextLine();
+        String input = getInput();
+        char commandState = parse(input);
+        while(commandState != 'c') {
+            if(commandState == 'b') {
+                int shopIndex = Integer.parseInt(input.substring(1).replaceAll(" ", ""))-1;
+                if(shopIndex >= 0 && shopIndex < shop.getSize()) {
+                    shop.buyJoker(shopIndex, player.getJokerDeck());
+                } else {
+                    System.out.println("Please enter a valid joker index.");
+                }
+            }
+            input = scanner.nextLine();
+            commandState = parse(input);
+        }
+        shop.endShop();
         gameState = 0;
     }
 
@@ -160,41 +175,44 @@ public class Game {
     }
 
     public char parse(String input) {
+        while(true) {
+            char commandChar = input.toLowerCase().charAt(0);
 
-        char commandChar = input.toLowerCase().charAt(0);
+            input = input.substring(1).replaceAll(" ", "");
+            char[] cardIndexes = input.toCharArray();
 
-        input = input.substring(1).replaceAll(" ", "");
-        char[] cardIndexes = input.toCharArray();
+            if(commandChar == 'q' || commandChar == 'e') {
+                System.out.println("Goodbye.");
+                System.exit(0);
+            }
 
-        if(commandChar == 'q' || commandChar == 'e') {
-            System.out.println("Goodbye.");
-            System.exit(0);
-        }
+            boolean inputHasValidRange = true;
+            if(input.length() > 5) inputHasValidRange = false;
 
-        boolean inputHasValidRange = true;
-        if(!input.matches("\\d+")) inputHasValidRange = false;
-        if(input.length() > 5) inputHasValidRange = false;
-        for(char c : cardIndexes) {
-            int cValue = c - '0';
-            if(cValue == 0 || cValue > (char)player.getDeck().getHandSize()) inputHasValidRange = false;
-        }
 
-        if(inputHasValidRange) {
             if(gameState == 1) {
-                if(commandChar == 'p' || commandChar == 'd') return commandChar;
+                if(!input.matches("\\d+")) inputHasValidRange = false;
+                for(char c : cardIndexes) {
+                    int cValue = c - '0';
+                    if(cValue == 0 || cValue > (char)player.getDeck().getHandSize()) inputHasValidRange = false;
+                }
+                if(inputHasValidRange) {
+                    if(commandChar == 'p' || commandChar == 'd') return commandChar;
+                }
             }
             if(gameState == 2) {
-                if(commandChar == 'b') return commandChar;
+                if(input.length() == 1 && commandChar == 'b') return commandChar;
+                if(input.length() == 0 && commandChar == 'c') return commandChar;
             }
-        }
 
-        System.out.println("Please enter a valid command.");
-        return parse(getInput());
+            System.out.println("Please enter a valid command.");
+            input = getInput();
+        }
     }
 
     public String getInput() {
         String input = "";
-        while(input.equals("")) {
+        while(input.trim().isEmpty()) {
             input = scanner.nextLine();
         }
 
