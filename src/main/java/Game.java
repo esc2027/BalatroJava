@@ -132,14 +132,14 @@ public class Game {
 
     public void shop() {
         Shop shop = new Shop(2);
-        shop.print();
+        shop.print(player);
         String input = getInput();
         char commandState = parse(input);
         while(commandState != 'c') {
             if(commandState == 'b') {
                 int shopIndex = Integer.parseInt(input.substring(1).replaceAll(" ", ""))-1;
                 if(shopIndex >= 0 && shopIndex < shop.getSize()) {
-                    shop.buyJoker(shopIndex, player.getJokerDeck());
+                    shop.buyJoker(shopIndex, player);
                 } else {
                     System.out.println("Please enter a valid joker index.");
                 }
