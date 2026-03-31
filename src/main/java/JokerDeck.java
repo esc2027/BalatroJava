@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class JokerDeck {
     ArrayList<Joker> jokers;
@@ -9,11 +10,16 @@ public class JokerDeck {
     }
 
     public void printJokers() {
-        System.out.print("Jokers:");
+        StringBuilder returnString = new StringBuilder();
+
+        returnString.append("Jokers: ");
         for(Joker joker : jokers) {
-            System.out.print(" " + joker.getName() + Color.RESETCOLOR);
+            returnString.append(joker.getName()).append(", ");
         }
-        System.out.println();
+        if(returnString.length() > 8) {
+            returnString.delete(returnString.length() - 2, returnString.length());
+        }
+        System.out.println(returnString);
     }
 
     public void addJoker(Joker joker) {

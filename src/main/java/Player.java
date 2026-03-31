@@ -2,7 +2,7 @@ public class Player {
     private Deck deck;
     private JokerDeck jokerDeck;
     private int roundScore;
-    private int money;
+    private int money = 10000;
 
     public Player() {
         deck = new Deck();

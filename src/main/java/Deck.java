@@ -45,7 +45,7 @@ public class Deck {
             if(card.getState() == 1) {
                 System.out.print(" " + card.getNameColor());
                 //System.out.flush();
-                Timer.sleep(100);
+                //Timer.sleep(100);
             }
         }
         System.out.println("");

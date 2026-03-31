@@ -13,8 +13,13 @@ public class Card {
     }
 
     public String getNameColor() {
-        if(suit.getSymbol() == '♠' || suit.getSymbol() == '♣') return Color.black(Color.whitebg(suit.getSymbol() + rank.getRankString()));
-        else return Color.red(Color.whitebg(suit.getSymbol() + rank.getRankString()));
+        return switch (suit.getSymbol()) {
+            case '♠' -> Color.black(Color.whitebg(suit.getSymbol() + rank.getRankString()));
+            case '♥' -> Color.red(Color.whitebg(suit.getSymbol() + rank.getRankString()));
+            case '♣' -> Color.blue(Color.whitebg(suit.getSymbol() + rank.getRankString()));
+            case '♦' -> Color.orange(Color.whitebg(suit.getSymbol() + rank.getRankString()));
+            default -> Color.purple(Color.whitebg("??"));
+        };
     }
 
     public Rank getRank() {

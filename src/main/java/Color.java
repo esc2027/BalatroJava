@@ -8,6 +8,7 @@ public class Color {
     public static final String BLUE = "\u001B[34m";
     public static final String PURPLE = "\u001B[35m";
     public static final String WHITE = "\u001B[97m";
+    public static final String ORANGE = "\u001b[38;2;220;130;0m";
 
     public static final String REDBG = "\u001B[41m";
     public static final String YELLOWBG = "\u001B[43m";
@@ -17,6 +18,10 @@ public class Color {
 
     public static String red(Object input) {
         return RED + input + RESETCOLOR;
+    }
+
+    public static String orange(Object input) {
+        return ORANGE + input + RESETCOLOR;
     }
 
     public static String green(Object input) {

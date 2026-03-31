@@ -24,21 +24,22 @@ public class Shop {
 
     public void buyJoker(int index, Player player) {
         Joker jokerToBuy = jokers.get(index);
-
-        if(player.getMoney() >= jokerToBuy.getBuyPrice()) {
+        if(player.getMoney() < jokerToBuy.getBuyPrice()) {
+            System.out.println(Color.red("Not enough cash."));
+        } else if(player.getJokerDeck().jokers.size() >= player.getJokerDeck().jokerSlots) {
+            System.out.println(Color.red("Joker slots full."));
+        } else {
             player.changeMoney(-jokerToBuy.getBuyPrice());
-            System.out.println("Bought " + jokerToBuy.getName());
+            System.out.println("Bought " + jokerToBuy.getName() + " (" + (player.getJokerDeck().jokers.size() + 1) + "/" + player.getJokerDeck().jokerSlots + ")");
 
             player.getJokerDeck().addJoker(jokerToBuy);
             jokers.remove(jokerToBuy);
 
-            System.out.println("\nRemaining balance: " + Color.yellow("$" + player.getMoney()));
-            System.out.println("Left in shop: ");
+            System.out.println("Balance: " + Color.yellow("$" + player.getMoney()));
+            System.out.println("\nLeft in shop: ");
             for(Joker joker : jokers) {
                 System.out.println(joker.getName() + Color.yellow(" $" + joker.getBuyPrice()));
             }
-        } else {
-            System.out.println(Color.red("Not enough cash."));
         }
 
 
