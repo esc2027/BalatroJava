@@ -83,8 +83,13 @@ public class Game {
 
             String input = getInput();
             char commandState = parse(input);
-            input = input.substring(1).replaceAll(" ", "");
 
+            while(commandState == '\0') {
+                input = getInput();
+                commandState = parse(input);
+            }
+
+            input = input.substring(1).replaceAll(" ", "");
 
             switch(commandState) {
                 case 'p':
@@ -175,39 +180,37 @@ public class Game {
     }
 
     public char parse(String input) {
-        while(true) {
-            char commandChar = input.toLowerCase().charAt(0);
+        char commandChar = input.toLowerCase().charAt(0);
 
-            input = input.substring(1).replaceAll(" ", "");
-            char[] cardIndexes = input.toCharArray();
+        input = input.substring(1).replaceAll(" ", "");
+        char[] cardIndexes = input.toCharArray();
 
-            if(commandChar == 'q' || commandChar == 'e') {
-                System.out.println("Goodbye.");
-                System.exit(0);
-            }
-
-            boolean inputHasValidRange = true;
-            if(input.length() > 5) inputHasValidRange = false;
-
-
-            if(gameState == 1) {
-                if(!input.matches("\\d+")) inputHasValidRange = false;
-                for(char c : cardIndexes) {
-                    int cValue = c - '0';
-                    if(cValue == 0 || cValue > (char)player.getDeck().getHandSize()) inputHasValidRange = false;
-                }
-                if(inputHasValidRange) {
-                    if(commandChar == 'p' || commandChar == 'd') return commandChar;
-                }
-            }
-            if(gameState == 2) {
-                if(input.length() == 1 && commandChar == 'b') return commandChar;
-                if(input.length() == 0 && commandChar == 'c') return commandChar;
-            }
-
-            System.out.println("Please enter a valid command.");
-            input = getInput();
+        if(commandChar == 'q' || commandChar == 'e') {
+            System.out.println("Goodbye.");
+            System.exit(0);
         }
+
+        boolean inputHasValidRange = true;
+        if(input.length() > 5) inputHasValidRange = false;
+
+
+        if(gameState == 1) {
+            if(!input.matches("\\d+")) inputHasValidRange = false;
+            for(char c : cardIndexes) {
+                int cValue = c - '0';
+                if(cValue == 0 || cValue > (char)player.getDeck().getHandSize()) inputHasValidRange = false;
+            }
+            if(inputHasValidRange) {
+                if(commandChar == 'p' || commandChar == 'd') return commandChar;
+            }
+        }
+        if(gameState == 2) {
+            if(input.length() == 1 && commandChar == 'b') return commandChar;
+            if(input.length() == 0 && commandChar == 'c') return commandChar;
+        }
+
+        System.out.println("Please enter a valid command.");
+        return '\0';
     }
 
     public String getInput() {
