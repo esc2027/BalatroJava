@@ -1,5 +1,6 @@
 public class Joker {
     private String name;
+    private String description;
     private int buyPrice;
     private int sellPrice;
     private int rarity;

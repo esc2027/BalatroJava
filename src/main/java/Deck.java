@@ -1,5 +1,4 @@
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 public class Deck {
     ArrayList<Card> cards;
@@ -48,7 +47,7 @@ public class Deck {
                 //Timer.sleep(100);
             }
         }
-        System.out.println("");
+        System.out.println();
     }
 
     public void draw() {
@@ -78,7 +77,7 @@ public class Deck {
         boolean flush = true;
         boolean straight = true;
         int[] rankCount = new int[15];
-        Suit firstSuit = playedCards.get(0).getSuit();
+        Suit firstSuit = playedCards.getFirst().getSuit();
 
         for(Card card : playedCards) {
             rankCount[card.getRank().getValue()]++;
