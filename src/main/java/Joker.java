@@ -10,6 +10,19 @@ public class Joker {
         this.buyPrice = buyPrice;
         this.sellPrice = Math.max(1, buyPrice / 2);
         this.rarity = rarity;
+        this.description = "No description";
+    }
+    public Joker(String name, int buyPrice, int rarity, String description) {
+        this.name = name;
+        this.buyPrice = buyPrice;
+        this.sellPrice = Math.max(1, buyPrice / 2);
+        this.rarity = rarity;
+        this.description = description;
+    }
+
+
+    public void print() {
+        System.out.println(getName() + Color.white(" - ") + description);
     }
 
     public int getBuyPrice() {
