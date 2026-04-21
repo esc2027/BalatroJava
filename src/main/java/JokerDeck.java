@@ -1,9 +1,8 @@
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class JokerDeck {
     ArrayList<Joker> jokers;
-    int jokerSlots = 5;
+    private final int JOKER_SLOTS = 5;
 
     public JokerDeck() {
         jokers = new ArrayList<>();
@@ -22,8 +21,20 @@ public class JokerDeck {
         System.out.println(returnString);
     }
 
+    public void printJokerInfo(int index) {
+        jokers.get(index).printInfo();
+    }
+
+    public Joker getJoker(int index) {
+        return jokers.get(index);
+    }
+
     public void addJoker(Joker joker) {
         jokers.add(joker);
+    }
+
+    public int getJokerSlots() {
+        return JOKER_SLOTS;
     }
 
     public void sellJoker(Joker joker, Player player) {

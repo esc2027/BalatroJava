@@ -209,7 +209,15 @@ public class Game {
             if(input.length() == 0 && commandChar == 'c') return commandChar;
         }
 
-        System.out.println("Please enter a valid command.");
+        if(input.length() == 1 && commandChar == 'i') {
+            int index = Integer.parseInt(input) - 1;
+            if(index >= 0 && index < player.getJokerDeck().jokers.size()) {
+                player.getJokerDeck().printJokerInfo(index);
+            }
+            else System.out.println("Please enter a valid joker index.");
+        }
+        else System.out.println("Please enter a valid command.");
+
         return '\0';
     }
 

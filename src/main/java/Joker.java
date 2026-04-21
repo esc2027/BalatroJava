@@ -21,8 +21,8 @@ public class Joker {
     }
 
 
-    public void print() {
-        System.out.println(getName() + Color.white(" - ") + description);
+    public void printInfo() {
+        System.out.println(getName() + "\n" + description);
     }
 
     public int getBuyPrice() {
