@@ -229,6 +229,18 @@ public class Game {
                 } else System.out.println("Cancelled selling joker " + joker.getName());
             } else System.out.println("Please enter a valid joker index.");
         }
+        else if(input.length() == 2 && commandChar == 's') {
+            int firstIndex = Integer.parseInt(input.substring(0,1)) - 1;
+            int secondIndex = Integer.parseInt(input.substring(1)) - 1;
+
+            if(firstIndex >= 0 && firstIndex < player.getJokerDeck().jokers.size() && secondIndex >= 0 && secondIndex < player.getJokerDeck().jokers.size()) {
+                Joker firstJoker = player.getJokerDeck().getJoker(firstIndex);
+                Joker secondJoker = player.getJokerDeck().getJoker(secondIndex);
+                player.getJokerDeck().swapJokers(firstIndex, secondIndex);
+                System.out.println("Swapped " + firstJoker.getName() + " and " + secondJoker.getName());
+                player.getJokerDeck().printJokers();
+            } else System.out.println("Please enter a valid joker index.");
+        }
         else if(commandChar == 'h') {
             System.out.println(Color.white("Commands:"));
             System.out.println(Color.white("  During round:"));
@@ -240,6 +252,7 @@ public class Game {
             System.out.println(Color.white("  Anytime:"));
             System.out.println(Color.white("    \"i(joker)\"") + "   Gives info on a joker you own. Example: \"i3\" gives info on the third joker you own.");
             System.out.println(Color.white("    \"s(joker)\"") + "   Sell a joker you own, previewing the sell price in a confirm prompt. Example: \"i1\" sells the first joker you own.");
+            System.out.println(Color.white("    \"s(jokers)\"") + "  Swap two jokers you own. Example: \"i25\" swaps your second and fifth jokers.");
         }
         else System.out.println("Please enter a valid command. Type \"help\" for help");
 

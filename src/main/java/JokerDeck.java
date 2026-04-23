@@ -29,6 +29,14 @@ public class JokerDeck {
         return jokers.get(index);
     }
 
+    public void swapJokers(int firstIndex, int secondIndex) {
+        Joker firstJoker = jokers.get(firstIndex);
+        Joker secondJoker = jokers.get(secondIndex);
+
+        jokers.set(firstIndex, secondJoker);
+        jokers.set(secondIndex, firstJoker);
+    }
+
     public void addJoker(Joker joker) {
         jokers.add(joker);
     }
