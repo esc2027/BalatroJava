@@ -229,7 +229,19 @@ public class Game {
                 } else System.out.println("Cancelled selling joker " + joker.getName());
             } else System.out.println("Please enter a valid joker index.");
         }
-        else System.out.println("Please enter a valid command.");
+        else if(commandChar == 'h') {
+            System.out.println(Color.white("Commands:"));
+            System.out.println(Color.white("  During round:"));
+            System.out.println(Color.white("    \"p(cards)\"") + "   Play up to 5 cards from your hand. Example: \"p3478\" plays cards 3, 4, 7, and 8.");
+            System.out.println(Color.white("    \"d(cards)\"") + "   Discard up to 5 cards from your hand. Example: \"d145\" discards cards 1, 4, and 5.");
+            System.out.println(Color.white("  In shop:"));
+            System.out.println(Color.white("    \"d(joker)\"") + "   Buy a joker from the shop. Example: \"b2\" buys the second joker.");
+            System.out.println(Color.white("    \"c\"") + "          Continue from the shop.");
+            System.out.println(Color.white("  Anytime:"));
+            System.out.println(Color.white("    \"i(joker)\"") + "   Gives info on a joker you own. Example: \"i3\" gives info on the third joker you own.");
+            System.out.println(Color.white("    \"s(joker)\"") + "   Sell a joker you own, previewing the sell price in a confirm prompt. Example: \"i1\" sells the first joker you own.");
+        }
+        else System.out.println("Please enter a valid command. Type \"help\" for help");
 
         return '\0';
     }
