@@ -37,7 +37,8 @@ public class JokerDeck {
         return JOKER_SLOTS;
     }
 
-    public void sellJoker(Joker joker, Player player) {
+    public void sellJoker(int index, Player player) {
+        Joker joker = jokers.get(index);
         player.changeMoney(joker.getSellPrice());
         jokers.remove(joker);
     }

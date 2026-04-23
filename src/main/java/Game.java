@@ -213,8 +213,21 @@ public class Game {
             int index = Integer.parseInt(input) - 1;
             if(index >= 0 && index < player.getJokerDeck().jokers.size()) {
                 player.getJokerDeck().printJokerInfo(index);
-            }
-            else System.out.println("Please enter a valid joker index.");
+            } else System.out.println("Please enter a valid joker index.");
+        }
+        else if(input.length() == 1 && commandChar == 's') {
+            int index = Integer.parseInt(input) - 1;
+            if(index >= 0 && index < player.getJokerDeck().jokers.size()) {
+
+                Joker joker = player.getJokerDeck().getJoker(index);
+                System.out.println("Are you sure you want to sell " + joker.getName() + " for " + Color.yellow("$" + joker.getSellPrice()) + "? (y/n)");
+                String response = scanner.nextLine().trim();
+                if(response.equals("y") || response.equals("yes")) {
+                    player.getJokerDeck().sellJoker(index, player);
+                    System.out.println("Sold " + joker.getName() + " for " + Color.yellow("$" + joker.getSellPrice()));
+                    System.out.println("New balance " + Color.yellow("$" + player.getMoney()));
+                } else System.out.println("Cancelled selling joker " + joker.getName());
+            } else System.out.println("Please enter a valid joker index.");
         }
         else System.out.println("Please enter a valid command.");
 
