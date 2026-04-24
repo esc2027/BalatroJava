@@ -43,8 +43,7 @@ public class Deck {
         for(Card card : cards) {
             if(card.getState() == 1) {
                 System.out.print(" " + card.getNameColor());
-                //System.out.flush();
-                //Timer.sleep(100);
+                Timer.sleep(75);
             }
         }
         System.out.println();

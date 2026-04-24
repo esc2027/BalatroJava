@@ -91,8 +91,6 @@ public class Game {
 
         while(player.getRoundScore() < blind.getTargetScore()) {
 
-            Timer.sleep(500);
-
             if(hands == 0) printLose();
 
             player.getDeck().fillHand();
@@ -116,10 +114,18 @@ public class Game {
                     Hand hand = player.getDeck().parseHand(input);
 
                     System.out.println("Played a " + Color.green(hand.getHandType().getName()));
+                    Timer.sleep(100);
 
                     chips = tallyChips(hand);
                     mult = hand.getMult();
-                    System.out.println(Color.blue(chips) + " x " + Color.red(mult) + " = " + Color.white(chips*mult));
+
+                    System.out.print(Color.blue(chips));
+                    Timer.sleep(100);
+                    System.out.print(" x " + Color.red(mult));
+                    Timer.sleep(100);
+                    System.out.println(" = " + Color.white(chips*mult));
+                    Timer.sleep(100);
+
                     System.out.println(Color.white("------------------------------------------------"));
                     player.changeScore(chips*mult);
 
@@ -173,6 +179,7 @@ public class Game {
         for(Card card : hand.getCards()) {
             System.out.print(" + " + Color.blue(card.getRank().getValue()));
             chipsTally += card.getRank().getValue();
+            Timer.sleep(100);
         }
         System.out.println(" = " + Color.blue(chipsTally));
 
@@ -289,8 +296,19 @@ public class Game {
         System.out.println(blind.getName() + " defeated with score " + Color.white(player.getRoundScore()));
         System.out.println(Color.yellow("\n------------------- Cashout --------------------"));
         System.out.println(blind.getName() + " ---> " + Color.yellow("$" + blind.getRewardMoney()));
-        if(hands > 0) System.out.println(Color.blue(hands) + " Remaining Hands......." + Color.yellow("$" + hands));
-        if(player.getMoney() >= 5) System.out.println(Color.white("1") + " interest per $5......." + Color.yellow("$" + Math.min(player.getMoney()/5, 5)));
+
+        if(hands > 0) {
+            System.out.print(Color.blue(hands) + " Remaining Hands");
+            Timer.type(".......");
+            System.out.println(Color.yellow("$" + hands));
+        }
+
+        if(player.getMoney() >= 5) {
+            System.out.print(Color.white(Math.min(player.getMoney()/5, 5)) + " Interest per $5");
+            Timer.type(".......");
+            System.out.println(Color.yellow("$" + Math.min(player.getMoney()/5, 5)));
+        }
+        Timer.sleep(100);
         int moneyTally = blind.getRewardMoney() + hands + Math.min(player.getMoney()/5, 5);
 
         player.changeMoney(moneyTally);

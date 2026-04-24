@@ -41,7 +41,8 @@ public class Blind {
     }
 
     public void print() {
-        System.out.println(name + ", target " + Color.white(targetScore));
+        Timer.typeln(name + ", target " + Color.white(targetScore));
+        Timer.sleep(300);
     }
 
     public String getName() {

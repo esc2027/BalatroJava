@@ -1,19 +1,19 @@
 public class Color {
     public static final String RESETCOLOR = "\u001B[0m";
 
-    public static final String BLACK = "\u001B[30m";
+    public static final String BLACK = "\u001b[30m";
     public static final String RED = "\u001b[38;2;255;66;63m";
-    public static final String GREEN = "\u001B[32m";
+    public static final String GREEN = "\u001b[32m";
     public static final String YELLOW = "\u001b[38;2;242;203;0m";
     public static final String BLUE = "\u001b[38;2;5;130;220m";
-    public static final String PURPLE = "\u001B[35m";
-    public static final String WHITE = "\u001B[97m";
+    public static final String PURPLE = "\u001b[35m";
+    public static final String WHITE = "\u001b[97m";
     public static final String ORANGE = "\u001b[38;2;190;120;0m";
     public static final String GRAY = "\u001b[38;2;80;90;95m";
 
-    public static final String REDBG = "\u001B[41m";
-    public static final String YELLOWBG = "\u001B[43m";
-    public static final String BLUEBG = "\u001B[44m";
+    public static final String REDBG = "\u001b[41m";
+    public static final String YELLOWBG = "\u001b[43m";
+    public static final String BLUEBG = "\u001b[44m";
 
     public static final String WHITEBG = "\u001b[107m";
 

@@ -17,6 +17,7 @@ public class Shop {
         System.out.println("--------------------- " + Color.yellow("SHOP") + " ---------------------");
         System.out.println("Balance: " + Color.yellow("$" + player.getMoney()) + "\n");
         for(Joker joker : jokers) {
+            Timer.sleep(100);
             System.out.println(joker.getName() + Color.yellow(" $" + joker.getBuyPrice()));
         }
 
