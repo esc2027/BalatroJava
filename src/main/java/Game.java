@@ -317,4 +317,18 @@ public class Game {
 
         System.out.println(Color.white("================================================"));
     }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public void addChips(int amount) {
+        chips += amount;
+    }
+    public void addMult(int amount) {
+        mult += amount;
+    }
+    public void multMult(int multiplier) {
+        mult *= multiplier;
+    }
 }
