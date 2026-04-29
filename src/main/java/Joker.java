@@ -4,20 +4,23 @@ public class Joker {
     private int buyPrice;
     private int sellPrice;
     private int rarity;
+    private int[] priorities;
 
-    public Joker(String name, int buyPrice, int rarity) {
+    public Joker(String name, int buyPrice, int rarity, int[] priorities) {
         this.name = name;
         this.buyPrice = buyPrice;
         this.sellPrice = Math.max(1, buyPrice / 2);
         this.rarity = rarity;
         this.description = "No description";
+        this.priorities = priorities;
     }
-    public Joker(String name, int buyPrice, int rarity, String description) {
+    public Joker(String name, int buyPrice, int rarity, int[] priorities, String description) {
         this.name = name;
         this.buyPrice = buyPrice;
         this.sellPrice = Math.max(1, buyPrice / 2);
         this.rarity = rarity;
         this.description = description;
+        this.priorities = priorities;
     }
 
 
@@ -47,33 +50,45 @@ public class Joker {
         };
     }
 
-    public void act(Game game, Hand hand) {
+    public boolean hasPriority(int priority) {
+        for(int i : priorities) {
+            if(i == priority) return true;
+        }
+        return false;
+    }
+
+    public void act(Hand hand) {
+        System.out.println(getName() + ": ");
+
         switch(name) {
             case "Joker" ->
-                game.addMult(4);
+                Game.game.addMult(4);
             case "Bull" ->
-                game.addChips(game.getPlayer().getMoney());
+                Game.game.addChips(Game.game.getPlayer().getMoney());
             default ->
-                game.addMult(1);
+                Game.game.addMult(1);
         }
     }
 
-    //"When Scored" jokers
-    public void act(Game game, Hand hand, int cardIndex) {
+    //"On Scored" jokers
+    public void act(Hand hand, int cardIndex) {
+
+        System.out.println(getName() + ": ");
+
         Card card = hand.getCard(cardIndex);
 
         switch(name) {
             case "Greedy Joker" -> {
-                if(card.getSuit() == Suit.DIAMONDS) game.addMult(3);
+                if(card.getSuit() == Suit.DIAMONDS) Game.game.addMult(3);
             }
             case "Lusty Joker" -> {
-                if(card.getSuit() == Suit.HEARTS) game.addMult(3);
+                if(card.getSuit() == Suit.HEARTS) Game.game.addMult(3);
             }
             case "Wrathful Joker" -> {
-                if(card.getSuit() == Suit.SPADES) game.addMult(3);
+                if(card.getSuit() == Suit.SPADES) Game.game.addMult(3);
             }
             case "Gluttonous Joker" -> {
-                if(card.getSuit() == Suit.CLUBS) game.addMult(3);
+                if(card.getSuit() == Suit.CLUBS) Game.game.addMult(3);
             }
         }
     }

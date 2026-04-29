@@ -1,6 +1,7 @@
 import java.util.Scanner;
 
 public class Game {
+    static Game game;
     private Player player;
     int gameState = 0; //0 = blind select, 1 = game, 2 = shop
     int chips, mult, hands, discards;
@@ -32,7 +33,7 @@ public class Game {
     };
 
     static void main() {
-        Game game = new Game();
+        game = new Game();
     }
 
     public Game() {
@@ -118,6 +119,8 @@ public class Game {
 
                     chips = tallyChips(hand);
                     mult = hand.getMult();
+
+                    player.getJokerDeck().playJokers(hand, 4);
 
                     System.out.print(Color.blue(chips));
                     Timer.sleep(100);
