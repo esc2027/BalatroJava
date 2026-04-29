@@ -54,7 +54,7 @@ public class JokerDeck {
     public void playJokers(Hand hand, int priority) {
         for(Joker joker : jokers) {
             switch(priority) {
-                case 1, 4, 6 -> {
+                case 2, 3 -> {
                     if(joker.hasPriority(priority)) joker.act(hand);
                 }
                 default -> System.out.println(Color.red("Wrong playJokers() method called. Check JokerDeck.java"));
@@ -66,7 +66,7 @@ public class JokerDeck {
     public void playJokers(Hand hand, int cardIndex, int priority) {
         for(Joker joker : jokers) {
             switch(priority) {
-                case 2, 3 -> {
+                case 1, 4, 6 -> {
                     if(joker.hasPriority(priority)) joker.act(hand, cardIndex);
                 }
                 default -> System.out.println(Color.red("Wrong playJokers() method called. Check JokerDeck.java"));
